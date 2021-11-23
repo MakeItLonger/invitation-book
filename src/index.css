@@ -355,7 +355,15 @@ body {
 }
 
 .search__icon-close {
-  visibility: hidden;
+  position: absolute;
+  top: 2px;
+  right: 25px;
+  opacity: 0.2;
+  cursor: pointer;
+}
+
+.search__icon-close:hover {
+  opacity: 1;
 }
 
 .search__remove {
