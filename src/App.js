@@ -1,26 +1,12 @@
 import React from 'react';
-
-const arr = [
-  {
-    avatarUrl: 'https://source.unsplash.com/50x50/?people&1',
-    fullName: 'Вася Пупкин',
-    email: 'vasia@gmail.com',
-  },
-  {
-    avatarUrl: 'https://source.unsplash.com/50x50/?people&2',
-    fullName: 'Александр Сарафинчан',
-    email: 'alex@gmail.com',
-  },
-  {
-    avatarUrl: 'https://source.unsplash.com/50x50/?people&3',
-    fullName: 'Тест Тесов',
-    email: 'test@gmail.com',
-  },
-];
+import User from './components/User';
+import skeletonPNG from './assets/images/skeleton.png';
 
 function App() {
-  const [users, setUsers] = React.useState(arr);
+  const [users, setUsers] = React.useState([]);
   const [input, setInput] = React.useState('');
+  const [list, setList] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const handleChangeInput = (e) => {
     const { value } = e.target;
@@ -31,6 +17,23 @@ function App() {
   const clearSearchInput = () => {
     setInput('');
   };
+
+  const addUser = (id) => {
+    if (list.find((obj) => obj.id === id)) {
+      setList(list.filter((obj) => obj.id !== id));
+    } else {
+      setList([...list, { id }]);
+    }
+  };
+
+  React.useEffect(() => {
+    fetch('https://61890a11d0821900178d772e.mockapi.io/usersInvitation')
+      .then((res) => res.json())
+      .then((json) => {
+        setUsers(json);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <div class="container">
@@ -61,27 +64,24 @@ function App() {
                   />
                 </svg>
               )}
-              {/* <img class="search__icon-close" src="./assets/images/close-btn.svg" alt="Закрыть" /> */}
             </label>
           </div>
 
           <div class="users">
-            {users
-              .filter((obj) => obj.fullName.toLowerCase().includes(input.toLowerCase()))
-              .map((obj) => (
-                <div class="users__box">
-                  <div class="users__left">
-                    <img src={obj.avatarUrl} alt="Пользователь" />
-                    <div class="users__inner">
-                      <h4 class="users__name">{obj.fullName}</h4>
-                      <p class="users__subtext">{obj.email}</p>
-                    </div>
-                  </div>
-                  <div class="users__right">
-                    <button type="button" class="close-btn"></button>
-                  </div>
-                </div>
-              ))}
+            {isLoading ? (
+              <img src={skeletonPNG} alt="skeleton" />
+            ) : (
+              users
+                .filter((obj) => obj.fullName.toLowerCase().includes(input.toLowerCase()))
+                .map((obj) => (
+                  <User
+                    key={obj.id}
+                    {...obj}
+                    onAdd={addUser}
+                    isAdded={list.find((o) => o.id === obj.id)}
+                  />
+                ))
+            )}
           </div>
           <div class="form__btn">
             <button class="form__btn-cancel">Отмена</button>
