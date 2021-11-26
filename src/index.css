@@ -293,6 +293,13 @@ body {
   background: #ff8159;
 }
 
+.form__btn-submit:disabled {
+  background-color: #eee;
+  border-color: #eee;
+  color: #444;
+  cursor: not-allowed;
+}
+
 /* ---------- success.html ----------- */
 
 .success__box {

@@ -29,6 +29,13 @@ function App() {
   };
 
   const sendListRequest = async () => {
+    // function timeout(ms) {
+    //   return new Promise((resolve) => setTimeout(resolve, ms));
+    // }
+
+    // await timeout(5000);
+    // console.log(1);
+
     await fetch('https://61890a11d0821900178d772e.mockapi.io/listInvitation', {
       method: 'POST',
       headers: {
@@ -39,11 +46,13 @@ function App() {
     });
     console.log(list);
     setIsSubmited(true);
+    setIsLoading(false);
   };
 
   const handleClickSend = () => {
     if (list.length) {
       sendListRequest();
+      setIsLoading(true);
     } else {
       alert('Список пуст!');
     }
@@ -55,7 +64,7 @@ function App() {
 
   React.useEffect(() => {
     let url = `https://61890a11d0821900178d772e.mockapi.io/usersInvitation${
-      input ? '?' + 'fullName=' + input : ''
+      input ? '?fullName=' + input : ''
     }`;
     console.log(input);
     console.log(url);
@@ -137,7 +146,11 @@ function App() {
           </div>
           <div class="form__btn">
             <button class="form__btn-cancel">Отмена</button>
-            <button onClick={handleClickSend} class="form__btn-submit" type="submit">
+            <button
+              disabled={isLoading}
+              onClick={handleClickSend}
+              class="form__btn-submit"
+              type="submit">
               Отправить
             </button>
           </div>
