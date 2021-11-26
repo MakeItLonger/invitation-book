@@ -54,20 +54,6 @@ function App() {
   };
 
   React.useEffect(() => {
-    let url = `https://61890a11d0821900178d772e.mockapi.io/usersInvitation${
-      input ? '?' + 'fullName=' + input : ''
-    }`;
-    console.log(input);
-    console.log(url);
-    fetch(url)
-      .then((res) => res.json())
-      .then((json) => {
-        setUsers(json);
-        setIsLoading(false);
-      });
-  }, [input]);
-
-  React.useEffect(() => {
     fetch('https://61890a11d0821900178d772e.mockapi.io/usersInvitation')
       .then((res) => res.json())
       .then((json) => {
@@ -124,7 +110,7 @@ function App() {
               <img src={skeletonPNG} alt="skeleton" />
             ) : (
               users
-                // .filter((obj) => obj.fullName.toLowerCase().includes(input.toLowerCase()))
+                .filter((obj) => obj.fullName.toLowerCase().includes(input.toLowerCase()))
                 .map((obj) => (
                   <User
                     key={obj.id}
