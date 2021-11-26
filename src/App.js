@@ -29,24 +29,23 @@ function App() {
   };
 
   const sendListRequest = async () => {
-    // function timeout(ms) {
-    //   return new Promise((resolve) => setTimeout(resolve, ms));
-    // }
-
-    // await timeout(5000);
-    // console.log(1);
-
-    await fetch('https://61890a11d0821900178d772e.mockapi.io/listInvitation', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(list),
-    });
-    console.log(list);
-    setIsSubmited(true);
-    setIsLoading(false);
+    try {
+      await fetch('https://61890a11d0821900178d772e.mockapi.io/listInvitation', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(list),
+      });
+      setIsSubmited(true);
+      setIsLoading(false);
+    } catch (err) {
+      console.error(err);
+      alert('Возникла ошибка при отправки данных!');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleClickSend = () => {
@@ -66,8 +65,6 @@ function App() {
     let url = `https://61890a11d0821900178d772e.mockapi.io/usersInvitation${
       input ? '?fullName=' + input : ''
     }`;
-    console.log(input);
-    console.log(url);
     fetch(url)
       .then((res) => res.json())
       .then((json) => {
