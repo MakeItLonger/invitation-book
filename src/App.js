@@ -41,7 +41,7 @@ function App() {
       setIsSubmited(true);
     } catch (err) {
       console.error(err);
-      alert('Возникла ошибка при отправки данных!');
+      alert('Возникла ошибка отправки данных!');
     } finally {
       setIsLoading(false);
     }
