@@ -39,7 +39,6 @@ function App() {
         body: JSON.stringify(list),
       });
       setIsSubmited(true);
-      setIsLoading(false);
     } catch (err) {
       console.error(err);
       alert('Возникла ошибка при отправки данных!');
