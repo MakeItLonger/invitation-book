@@ -1,12 +1,14 @@
 import React from 'react';
 import User from './components/User';
 import skeletonPNG from './assets/images/skeleton.png';
+import Success from './components/Success';
 
 function App() {
   const [users, setUsers] = React.useState([]);
   const [input, setInput] = React.useState('');
   const [list, setList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isSubmited, setIsSubmited] = React.useState(false);
 
   const handleChangeInput = (e) => {
     const { value } = e.target;
@@ -26,6 +28,31 @@ function App() {
     }
   };
 
+  const sendListRequest = async () => {
+    await fetch('https://61890a11d0821900178d772e.mockapi.io/listInvitation', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(list),
+    });
+    console.log(list);
+    setIsSubmited(true);
+  };
+
+  const handleClickSend = () => {
+    if (list.length) {
+      sendListRequest();
+    } else {
+      alert('Список пуст!');
+    }
+  };
+
+  const handleClickOnOkay = () => {
+    setIsSubmited(false);
+  };
+
   React.useEffect(() => {
     fetch('https://61890a11d0821900178d772e.mockapi.io/usersInvitation')
       .then((res) => res.json())
@@ -35,10 +62,21 @@ function App() {
       });
   }, []);
 
+  if (isSubmited) {
+    return (
+      <div class="container">
+        <div class="box">
+          <Success onClose={handleClickOnOkay} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div class="container">
       <div class="box">
         <h3 class="title">Рассылка приглашений</h3>
+
         <form action="#">
           <div class="search">
             <label class="search__label">
@@ -85,7 +123,7 @@ function App() {
           </div>
           <div class="form__btn">
             <button class="form__btn-cancel">Отмена</button>
-            <button class="form__btn-submit" type="submit">
+            <button onClick={handleClickSend} class="form__btn-submit" type="submit">
               Отправить
             </button>
           </div>

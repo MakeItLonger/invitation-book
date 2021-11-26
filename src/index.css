@@ -354,6 +354,10 @@ body {
   position: relative;
 }
 
+.success-block {
+  padding: 60px 0;
+}
+
 .search__icon-close {
   position: absolute;
   top: 2px;
